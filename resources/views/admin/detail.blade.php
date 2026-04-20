@@ -40,7 +40,7 @@
 
             <div class="detail-block">
                 <span>Waktu Laporan</span>
-                <p>{{ $pengaduan->created_at?->format('d M Y H:i:s') }}</p>
+                <p>{{ $pengaduan->created_at?->timezone('Asia/Jakarta')->format('d M Y H:i:s') }} WIB</p>
             </div>
         </div>
 

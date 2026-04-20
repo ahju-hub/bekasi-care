@@ -15,18 +15,17 @@ class AdminController extends Controller
             return redirect('/login')->withErrors(['email' => 'Silakan login sebagai admin terlebih dahulu.']);
         }
 
-        if (! $request->user()->is_admin) {
-            abort(403);
-        }
-
         $pengaduans = Pengaduan::query()
             ->latest()
             ->paginate(10);
 
+        $todayStart = now('Asia/Jakarta')->startOfDay()->timezone('UTC');
+        $todayEnd = now('Asia/Jakarta')->endOfDay()->timezone('UTC');
+
         $stats = [
             'total' => Pengaduan::count(),
             'baru' => Pengaduan::where('status', 'Baru')->count(),
-            'hari_ini' => Pengaduan::whereDate('created_at', now()->toDateString())->count(),
+            'hari_ini' => Pengaduan::whereBetween('created_at', [$todayStart, $todayEnd])->count(),
         ];
 
         return view('admin.index', compact('pengaduans', 'stats'));
@@ -38,10 +37,6 @@ class AdminController extends Controller
             return redirect('/login');
         }
 
-        if (! $request->user()->is_admin) {
-            abort(403);
-        }
-
         $pengaduan = Pengaduan::findOrFail($id);
 
         return view('admin.detail', compact('pengaduan'));
@@ -51,10 +46,6 @@ class AdminController extends Controller
     {
         if (! $request->user()) {
             return redirect('/login');
-        }
-
-        if (! $request->user()->is_admin) {
-            abort(403);
         }
 
         $pengaduan = Pengaduan::findOrFail($id);

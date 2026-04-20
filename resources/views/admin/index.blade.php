@@ -68,7 +68,7 @@
                             <td>{{ $item->jenis }}</td>
                             <td>{{ $item->lokasi }}</td>
                             <td><span class="table-badge">{{ $item->status }}</span></td>
-                            <td>{{ $item->created_at?->format('d M Y H:i') }}</td>
+                            <td>{{ $item->created_at?->timezone('Asia/Jakarta')->format('d M Y H:i') }} WIB</td>
                             <td class="table-actions">
                                 <a href="/admin/detail/{{ $item->id }}" class="text-link">Detail</a>
                                 <a href="/admin/hapus/{{ $item->id }}" class="text-link text-link--danger" onclick="return confirm('Hapus laporan ini?')">Hapus</a>
