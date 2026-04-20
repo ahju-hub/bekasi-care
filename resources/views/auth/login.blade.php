@@ -60,10 +60,13 @@
                     <input type="password" name="password" placeholder="Masukkan password" required>
                 </label>
 
-                <label class="checkbox-field">
-                    <input type="checkbox" name="remember" value="1">
-                    <span>Ingat sesi login saya</span>
-                </label>
+                <div class="login-options">
+                    <label class="checkbox-field">
+                        <input type="checkbox" name="remember" value="1">
+                        <span>Ingat sesi login saya</span>
+                    </label>
+                    <a href="/forgot-password" class="text-link">Lupa password?</a>
+                </div>
 
                 <div class="form-actions form-actions--stacked">
                     <button type="submit" class="primary-button">Masuk</button>

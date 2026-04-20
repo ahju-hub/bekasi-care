@@ -48,6 +48,33 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    public function showForgotPassword(): View|RedirectResponse
+    {
+        if (Auth::check()) {
+            return redirect()->to(Auth::user()->is_admin ? '/admin' : '/pengaduan');
+        }
+
+        return view('auth.forgot-password');
+    }
+
+    public function updateForgotPassword(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'email' => ['required', 'email', 'exists:users,email'],
+            'password' => ['required', 'string', 'confirmed', 'min:8'],
+        ], [
+            'email.exists' => 'Email belum terdaftar di Bekasi Care.',
+            'password.confirmed' => 'Konfirmasi password tidak sama.',
+            'password.min' => 'Password minimal 8 karakter.',
+        ]);
+
+        User::where('email', $data['email'])->update([
+            'password' => Hash::make($data['password']),
+        ]);
+
+        return redirect('/login')->with('success', 'Password berhasil diperbarui. Silakan login dengan password baru.');
+    }
+
     public function register(Request $request): RedirectResponse
     {
         $data = $request->validate([
